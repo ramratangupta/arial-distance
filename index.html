@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>AERIAL DISTANCE for School</title>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;    font-family: monospace;
+      }
+    </style>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+
+  <br>
+	Enter School Address <input type="text" id="school_address"/> <input type ="button" value ="View Aerial Distance" id="ViewRadialLocation"/>
+  <ul>
+  <li>Dark green - 0 -1 KM</li>
+  <li>Light green - 1 - 3 KM</li>
+  <li>Yellow - 3 - 6 KM</li>
+  <li>RED - 6 - 8 KM</li>
+  </ul>
+  <div dir="ltr">Sincerely,<div><br><b>Ramratan Gupta</b></div><div><b><br></b></div><div><b>09313583357 / 09717679558</b></div><div><a href="http://in.linkedin.com/in/ramratangupta" title="Connect me on Linkedin" style="color:rgb(17,85,204);font-family:'Times New Roman';font-size:medium" target="_blank"><img alt="Connect me on Linkedin" src="https://2.bp.blogspot.com/-Ecgohdf8OsU/UvSNZNE5HaI/AAAAAAAADTs/JHE2ByHCsKg/s1600/linkedin.png" style="border:0px"></a><span style="color:rgb(0,0,0);font-family:'Times New Roman';font-size:medium">&nbsp;</span><a href="http://ramratangupta.blogspot.in/?utm_source=Signature&amp;utm_medium=email&amp;utm_campaign=Email%20Signature" title="View my Blog" style="color:rgb(17,85,204);font-family:'Times New Roman';font-size:medium" target="_blank"><img alt="View my Blog" src="https://4.bp.blogspot.com/-5KPmmApcflw/UvSNrD-ie0I/AAAAAAAADT4/dPCw8-6A6t4/s1600/blogger.png" style="border:0px"></a><span style="color:rgb(0,0,0);font-family:'Times New Roman';font-size:medium">&nbsp;</span><a href="http://www.facebook.com/ramratan.gupta" title="Connect me on facebook" style="color:rgb(17,85,204);font-family:'Times New Roman';font-size:medium" target="_blank"><img alt="Connect me on facebook" src="https://3.bp.blogspot.com/-JPvgoaJxkp4/UvSNrHumhoI/AAAAAAAADUE/ZWLK9ZNtVVI/s1600/facebook.png" style="border:0px"></a><span style="color:rgb(0,0,0);font-family:'Times New Roman';font-size:medium">&nbsp;</span><a href="https://www.google.com/+RamratanGupta" title="Connect me on Google+" style="color:rgb(17,85,204);font-family:'Times New Roman';font-size:medium" target="_blank"><img alt="Connect me on Google+" src="https://4.bp.blogspot.com/-onTnSjRSsew/UvSNrNlkZnI/AAAAAAAADUA/wiQ-Ei_IE7M/s1600/google_plus.png" style="border:0px"></a><span style="color:rgb(0,0,0);font-family:'Times New Roman';font-size:medium">&nbsp;</span><a href="https://twitter.com/ramratangupta" title="Follow me on Twitter" style="color:rgb(17,85,204);font-family:'Times New Roman';font-size:medium" target="_blank"><img alt="Follow me on Twitter" src="https://1.bp.blogspot.com/-D1OvbjbuFZQ/UvSNr1Rd1WI/AAAAAAAADUQ/_7qyPOnOY3A/s1600/twitter.png" style="border:0px"></a><span style="color:rgb(0,0,0);font-family:'Times New Roman';font-size:medium">&nbsp;</span><a class="header-logo-invertocat" href="https://github.com/ramratangupta" aria-label="Homepage" data-ga-click="(Logged out) Header, go to homepage, icon:logo-wordmark">
+      <svg aria-hidden="true" class="octicon octicon-mark-github" height="32" version="1.1" viewBox="0 0 16 16" width="32"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+    </a></div></div>
+    <div id="map"></div>
+    <script>
+jQuery(document).ready(function(){
+	jQuery("#ViewRadialLocation").click(function(){
+		var address = jQuery("#school_address").val();
+		if(address!=""){
+			getRadial(address);
+		}
+	});
+});
+	var school_lat_lng = {"lat" : 28.6139391,"lng" : 77.2090212};
+	var title = "New Delhi";
+  function getRadial(address){
+    	var request = {
+    	    location: school_lat_lng,
+    	    radius: '52000',
+    	    query: address
+      	};
+    	var service = new google.maps.places.PlacesService(map);
+      	service.textSearch(request, function(results,status){
+        		if (status == google.maps.places.PlacesServiceStatus.OK) {
+                var mapn = "";
+        		    for (var i = 0; i < results.length; i++) {
+                  if(i>2)
+                    break;
+        		      	school_lat_lng = results[i].geometry.location;
+        			      title = results[i].name+"<br/>"+results[i].formatted_address;
+                  if(i==0){
+                    mapn = initMap();
+                  }else{
+                    createRadial(school_lat_lng, title,mapn);
+                  }
+
+            }
+        		    
+        		}
+    	 }
+      );
+  }
+
+	 
+      var citymap = [{"d":1000,"c":"darkgreen"},{"d":3000,"c":"#4e9a06"},{"d":6000,"c":"yellow"},{"d":8000,"c":"red"}];
+	 
+      function  createRadial(school_lat_lng,title,map){
+	var marker = new google.maps.Marker({
+      		map: map,
+      		position: school_lat_lng
+	});
+	var infowindow = new google.maps.InfoWindow({
+    		content: title
+  	});
+        infowindow.open(map, marker);
+	marker.addListener('click', function() {
+    		infowindow.open(map, marker);
+  	});
+        // Construct the circle for each value in citymap.
+        // Note: We scale the area of the circle based on the population.
+        for (var city in citymap) {
+          // Add the circle for this city to the map.
+          var cityCircle = new google.maps.Circle({
+            strokeColor: citymap[city].c,
+            strokeOpacity: 1,
+            strokeWeight: 2,
+            fillColor: citymap[city].c,
+            fillOpacity: 0.2,
+            map: map,
+            center: school_lat_lng,
+            radius: citymap[city].d
+          });
+        }
+      }
+     function initMap() {
+        // Create the map.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom:12,
+          center: school_lat_lng
+        });
+	     createRadial(school_lat_lng,title,map);
+       return map;
+	}
+	
+
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyjZKf6e2pspTb879XOHX7VGT6PK7vZTE&libraries=places&callback=initMap"></script>
+
+
+  </body>
+</html>
